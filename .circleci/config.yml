@@ -9,6 +9,11 @@ executors:
       - image: cimg/base:stable
     resource_class: small
 
+parameters:
+  version-filepath:
+    type: string
+    default: "LAST_VERSION.txt"
+
 jobs:
   build-job:
     executor: basic
@@ -18,9 +23,9 @@ jobs:
           echo 'export BUILD_NUM=$((CIRCLE_BUILD_NUM + 500000))' >> $BASH_ENV
           echo 'export APP_VERSION=4.18-${BUILD_NUM}' >> $BASH_ENV
       - run: |
-          printenv APP_VERSION
-
-  # deploy-job:
+          echo "${APP_VERSION}" > << pipeline.parameters.version-filepath >>
+      - store_artifacts:
+          path: << pipeline.parameters.version-filepath >>
 
 workflows:
   pull-request:
