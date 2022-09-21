@@ -1,6 +1,6 @@
 version: 2.1
 # main goal:
-# deploy-job when run on master, looks up the latest REAL_VERSION file.
+# deploy-job when run on main, looks up the latest REAL_VERSION file.
 # artifacts likely better?
 
 executors:
