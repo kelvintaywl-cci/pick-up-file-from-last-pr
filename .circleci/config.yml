@@ -27,12 +27,28 @@ jobs:
       - store_artifacts:
           path: << pipeline.parameters.version-filepath >>
 
+  deploy-job:
+    executor: basic
+    steps:
+      - checkout
+      - run: |
+          # see what PRs are involved here.
+          printenv CIRCLE_PULL_REQUESTS || true
+
 workflows:
   pull-request:
     jobs:
-      - build-job
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - main
-          #       - /release_.*/
+      - build-job:
+          filters:
+            branches:
+              ignore:
+                - main
+                - /release_.*/
+  on-main:
+    jobs:
+      - deploy-job:
+          filters:
+            branches:
+              only:
+                - main
+                - /release_.*/
